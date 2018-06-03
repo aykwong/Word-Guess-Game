@@ -20,6 +20,7 @@ document.getElementById("guessesLeft").innerHTML = stats.guessesLeft;
 console.log(computerGuess);
 stats.guessDisplay = stats.guessDisplay.repeat(computerGuess.length)
 document.getElementById("guessDisplay").innerHTML = stats.guessDisplay;
+console.log(stats.guessDisplay);
 
 document.onkeyup = function userGuess(event) {
 
@@ -32,9 +33,11 @@ document.onkeyup = function userGuess(event) {
     }
 
     for (var check = 0; check < computerGuess.length; check++) {
-        debugger;
         if (userGuess === computerGuess[check]) {
-            stats.guessDisplay = stats.guessDisplay.slice(0, check) + userGuess + stats.guessDisplay.slice(check-1);
+            var sliceEnd = check * 2
+            var sliceCheck = sliceEnd + 1
+            stats.guessDisplay = stats.guessDisplay.slice(0, sliceEnd) + userGuess + stats.guessDisplay.slice(sliceCheck);
+            console.log(stats.guessDisplay);
             document.getElementById("guessDisplay").innerHTML = stats.guessDisplay;
         }
     }
