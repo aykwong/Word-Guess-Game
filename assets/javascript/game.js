@@ -18,10 +18,8 @@ document.getElementById("wins").innerHTML = stats.wins;
 document.getElementById("losses").innerHTML = stats.losses;
 document.getElementById("guessesLeft").innerHTML = stats.guessesLeft;
 
-console.log(computerGuess);
 stats.guessDisplay = stats.guessDisplay.repeat(computerGuess.length)
 document.getElementById("guessDisplay").innerHTML = stats.guessDisplay;
-console.log(stats.guessDisplay);
 
 document.onkeyup = function userGuess(event) {
 
@@ -34,15 +32,20 @@ document.onkeyup = function userGuess(event) {
         }
     }
 
+    // If user misses, missCounter will change the number of lives, rest is to record input history
+    var missCounter = 1;
+    stats.guessesMade = stats.guessesMade + userGuess + " ";
+    document.getElementById("guessesMade").innerHTML = stats.guessesMade;
+
     // Check if user input matches any of the characters of the word
     for (var check = 0; check < computerGuess.length; check++) {
         if (userGuess === computerGuess[check]) {
             var sliceEnd = check * 2
             var sliceCheck = sliceEnd + 1
             stats.guessDisplay = stats.guessDisplay.slice(0, sliceEnd) + userGuess + stats.guessDisplay.slice(sliceCheck);
-            console.log(stats.guessDisplay);
             document.getElementById("guessDisplay").innerHTML = stats.guessDisplay;
             stats.fillInCounter++;
+            missCounter = 0;
         }
     }
 
@@ -52,11 +55,9 @@ document.onkeyup = function userGuess(event) {
         document.getElementById("wins").innerHTML = stats.wins;
         stats.result = 1;
         alert("Congratulations! You guessed the pokemon, " + computerGuess + ".");
-    } else {
+    } else if (missCounter === 1) {
         stats.guessesLeft--;
         document.getElementById("guessesLeft").innerHTML = stats.guessesLeft;
-        stats.guessesMade = stats.guessesMade + userGuess + " ";
-        document.getElementById("guessesMade").innerHTML = stats.guessesMade;
     }
 
     // If user has ran out of guesses, losses go up by 1, change result counter to 1
@@ -68,15 +69,12 @@ document.onkeyup = function userGuess(event) {
 
     //if result counter equals 1, reset the game, change result counter to 0
     if (stats.result === 1) {
-        debugger;
         computerGuess = stats.guessWord();
-        console.log(computerGuess);
         stats.guessesLeft = 10;
         document.getElementById("guessesLeft").innerHTML = stats.guessesLeft;
         stats.guessesMade = "";
         document.getElementById("guessesMade").innerHTML = stats.guessesMade;
         stats.guessDisplay = "_ ".repeat(computerGuess.length);
-        console.log(stats.guessDisplay);
         document.getElementById("guessDisplay").innerHTML = stats.guessDisplay;
         stats.result = 0;
         stats.fillInCounter = 0;
